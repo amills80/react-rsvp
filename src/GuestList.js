@@ -4,14 +4,17 @@ import Guest from './Guest';
 
 const GuestList = props => 
     <ul>
-      {props.guests.map((guest, index) =>
-        <Guest key={index} 
-        name={guest.name} 
-        isConfirmed={guest.isConfirmed}
-        isEditing={guest.isEditing} 
-        handleConfirmation={() => props.toggleconfirmationAt(index)}
-        handleToggleEditing={() => props.toggleEditingAt(index)} 
-        setName={text => props.setNameAt(text, index)} />
+      {props.guests
+        .filter(guest => !props.isFiltered || guest.isConfirmed)
+        .map((guest, index) =>
+        <Guest 
+          key={index} 
+          name={guest.name} 
+          isConfirmed={guest.isConfirmed}
+          isEditing={guest.isEditing} 
+          handleConfirmation={() => props.toggleconfirmationAt(index)}
+          handleToggleEditing={() => props.toggleEditingAt(index)} 
+          setName={text => props.setNameAt(text, index)} />
       )}
     </ul>;
 
@@ -19,7 +22,8 @@ GuestList.propTypes = {
   guests: PropTypes.array.isRequired,
   toggleconfirmationAt: PropTypes.func.isRequired,
   toggleEditingAt: PropTypes.func.isRequired,
-  setNameAt: PropTypes.func.isRequired
+  setNameAt: PropTypes.func.isRequired,
+  isFiltered: PropTypes.bool.isRequired
 }
 
 

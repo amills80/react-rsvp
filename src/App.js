@@ -5,6 +5,7 @@ import GuestList from './GuestList.js';
 class App extends Component {
   state = {
     isFiltered: false,
+    pendingGuest: "",
     guests: [
       {
        name: "Alan", 
@@ -64,6 +65,24 @@ class App extends Component {
   toggleFilter = () => 
     this.setState({ isFiltered: !this.state.isFiltered });
   
+  handleNameAddition = e => 
+    this.setState({ pendingGuest: e.target.value });
+    
+  newGuestSubmitHandler = e => {
+    e.preventDefault();
+    this.setState({
+      guests: [
+        {
+          name: this.state.pendingGuest,
+          isConfirmed: false,
+          isEditing: false
+        },
+        ...this.state.guests
+        ],
+        pendingGuest: ''
+    });
+  }
+  
   getTotalInvited = () => this.state.guests.length;
   //getAttendingGuests = () => 
   //getImcpmfor,edGiests = () =>
@@ -74,9 +93,17 @@ class App extends Component {
       <header>
         <h1>RSVP</h1>
         <p>A Social/Planning App</p>
-        <form>
-            <input type="text" value="Safia" placeholder="Invite Someone" />
-            <button type="submit" name="submit" value="submit">Submit</button>
+        <form onSubmit={this.newGuestSubmitHandler}>
+            <input 
+              type="text" 
+              onChange={this.handleNameAddition}
+              value={this.state.pendingGuest} 
+              placeholder="Invite Someone" />
+            <button 
+              type="submit" 
+              name="submit" 
+              value="submit"
+              onChange="this.handleNameAddition">Submit</button>
         </form>
       </header>
       <div className="main">
